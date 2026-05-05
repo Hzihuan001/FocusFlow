@@ -2,11 +2,11 @@
 
 <div align="center">
   <img src="logo.png" alt="FocusFlow Logo" width="120"/>
-  
+
   **专注力培养 × 虚拟植物养成 × AI 助手**
-  
+
   一款基于番茄工作法的注意力管理 APP，通过虚拟植物养成和 AI 助手，帮助用户建立专注习惯
-  
+
   [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
   [![Android](https://img.shields.io/badge/Android-26%2B-green.svg)](https://developer.android.com)
   [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.3-brightgreen.svg)](https://spring.io/projects/spring-boot)
@@ -66,7 +66,7 @@ FocusFlow 是一款创新的注意力管理应用，结合了：
 ## ✨ 核心功能
 
 ### 1. 专注模式
-- 🎯 **番茄工作法**：25/52 分钟专注时长
+- 🎯 **番茄工作法/自定义模式**：25/52 分钟专注时长或自定义
 - 🔒 **防逃逸机制**：300ms 轮询检测 + 悬浮窗锁屏
 - 📊 **数据统计**：专注时长、连续天数、历史记录
 
@@ -205,14 +205,31 @@ cd FocusFlow_App
 
 ## 📊 核心功能演示
 
+### APP界面
+
+<img src="DOC/screenshots/focus_APP1.png" width="300"/>
+
+<img src="DOC/screenshots/focus_APP2.png" width="300"/>
+
+### 数据看板
+
+<img src="DOC/screenshots/focus_data1.png" width="300"/>
+
+<img src="DOC/screenshots/focus_data2.png" width="300"/>
+
 ### 专注模式
-<img src="DOC/screenshots/focus_mode.png" width="300"/>
+
+<img src="DOC/screenshots/focus_mode1.png" width="300"/>
+
+<img src="DOC/screenshots/focus_mode2.png" width="300"/>
 
 ### 植物养成
-<img src="DOC/screenshots/plant_garden.png" width="300"/>
+<img src="DOC/screenshots/plant_garden1.png" width="300"/>
 
 ### AI 助手
-<img src="DOC/screenshots/ai_chat.png" width="300"/>
+<img src="DOC/screenshots/ai_chat1.png" width="300"/>
+
+<img src="DOC/screenshots/ai_chat2.png" width="300"/>
 
 ### 管理后台
 <img src="DOC/screenshots/admin_dashboard.png" width="600"/>
@@ -253,6 +270,6 @@ cd FocusFlow_App
 
 <div align="center">
   Made with ❤️ by 黄子桓
-  
+
   如果这个项目对你有帮助，请给个 ⭐️ Star！
 </div>
