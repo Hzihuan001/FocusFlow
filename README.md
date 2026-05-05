@@ -236,9 +236,7 @@ cd FocusFlow_App
 ## 👨‍💻 作者
 
 **黄子桓**
-- 学号：32001192
-- 专业：软件工程
-- 邮箱：your-email@example.com
+- 邮箱：851834987@qq.com
 
 ## 🙏 致谢
 
