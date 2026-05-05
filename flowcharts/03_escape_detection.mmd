@@ -1,0 +1,26 @@
+flowchart TD
+    Start([开始轮询]) --> Delay[协程延迟300ms]
+    Delay --> Query[调用UsageStatsManager.queryEvents]
+    Query --> Extract[提取最新ACTIVITY_RESUMED事件]
+    Extract --> GetPkg[获取前台应用包名]
+    GetPkg --> Check1{包名是否为<br/>目标应用?}
+    
+    Check1 -->|是| Continue1[继续轮询]
+    Check1 -->|否| Check2{是否在<br/>白名单?}
+    
+    Check2 -->|是| Continue2[继续轮询]
+    Check2 -->|否| Trigger[触发拉回Intent]
+    
+    Trigger --> Flags[设置Intent标志:<br/>FLAG_ACTIVITY_NEW_TASK<br/>FLAG_ACTIVITY_CLEAR_TOP<br/>FLAG_ACTIVITY_SINGLE_TOP]
+    Flags --> Return[应用回到前台<br/>50-100ms]
+    Return --> Continue3[继续轮询]
+    
+    Continue1 --> Delay
+    Continue2 --> Delay
+    Continue3 --> Delay
+    
+    style Start fill:#00ff9f,stroke:#00ff9f,color:#000
+    style Check1 fill:#b026ff,stroke:#b026ff,color:#fff
+    style Check2 fill:#b026ff,stroke:#b026ff,color:#fff
+    style Trigger fill:#ff6b6b,stroke:#ff6b6b,color:#fff
+    style Delay fill:#4ecdc4,stroke:#4ecdc4,color:#000

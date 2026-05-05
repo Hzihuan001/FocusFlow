@@ -1,0 +1,500 @@
+// ═══════════════════════════════════════════════════════════════════════════════
+// 浅色主题全局样式
+// ═══════════════════════════════════════════════════════════════════════════════
+$primary-color: #2196F3;
+$bg-light: #FAFAFA;
+$bg-card: #FFFFFF;
+$text-primary: #1A1A1A;
+$text-secondary: #757575;
+$border-color: rgba(33, 150, 243, 0.2);
+
+// 覆盖 Element Plus 主题色（浅色主题）
+:root {
+  --el-color-primary: #2196F3;
+  --el-color-primary-light-3: #64B5F6;
+  --el-color-primary-light-5: #90CAF9;
+  --el-color-primary-light-7: #BBDEFB;
+  --el-color-primary-light-8: #E3F2FD;
+  --el-color-primary-light-9: #F5F9FD;
+  --el-color-primary-dark-2: #1976D2;
+  
+  // 背景色
+  --el-bg-color: #FAFAFA;
+  --el-bg-color-page: #F5F5F5;
+  --el-bg-color-overlay: #FFFFFF;
+  
+  // 文字色
+  --el-text-color-primary: #1A1A1A;
+  --el-text-color-regular: #424242;
+  --el-text-color-secondary: #757575;
+  --el-text-color-placeholder: #9E9E9E;
+  
+  // 边框色
+  --el-border-color: #E0E0E0;
+  --el-border-color-light: #EEEEEE;
+  --el-border-color-lighter: #F5F5F5;
+  --el-border-color-extra-light: #FAFAFA;
+  
+  // 填充色
+  --el-fill-color: #F5F5F5;
+  --el-fill-color-light: #FAFAFA;
+  --el-fill-color-lighter: #FFFFFF;
+  --el-fill-color-extra-light: #FFFFFF;
+  --el-fill-color-dark: #EEEEEE;
+  --el-fill-color-darker: #E0E0E0;
+  --el-fill-color-blank: #FFFFFF;
+}
+
+body {
+  background: $bg-light;
+  color: $text-primary;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Element Plus 表格全局覆盖（浅色主题）
+// ═══════════════════════════════════════════════════════════════════════════════
+.el-table {
+  --el-table-bg-color: #{$bg-card} !important;
+  --el-table-tr-bg-color: #{$bg-card} !important;
+  --el-table-header-bg-color: #E3F2FD !important;
+  --el-table-row-hover-bg-color: #F5F9FD !important;
+  --el-table-border-color: #E0E0E0 !important;
+  --el-table-text-color: #{$text-primary} !important;
+  --el-table-header-text-color: #{$primary-color} !important;
+  
+  background-color: $bg-card !important;
+  
+  th.el-table__cell {
+    background-color: #E3F2FD !important;
+    color: $primary-color !important;
+    font-weight: 600;
+  }
+  
+  td.el-table__cell {
+    background-color: transparent !important;
+    color: $text-primary !important;
+  }
+  
+  .el-table__row {
+    background-color: $bg-card !important;
+    
+    &:hover {
+      td.el-table__cell {
+        background-color: #F5F9FD !important;
+      }
+    }
+  }
+  
+  // 斑马纹
+  &--striped .el-table__row--striped {
+    td.el-table__cell {
+      background-color: #FAFAFA !important;
+    }
+  }
+  
+  // 内部边框
+  &--border {
+    &::after,
+    &::before {
+      background-color: #E0E0E0 !important;
+    }
+  }
+  
+  // 空数据
+  .el-table__empty-block {
+    background-color: $bg-card !important;
+    color: $text-secondary !important;
+  }
+}
+
+// 卡片样式
+.cyber-card {
+  background: $bg-card;
+  border: 1px solid $border-color;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  
+  .el-card__body {
+    padding: 20px;
+  }
+}
+
+// 表格样式（兼容旧版）
+.cyber-table {
+  --el-table-bg-color: #{$bg-card};
+  --el-table-tr-bg-color: #{$bg-card};
+  --el-table-header-bg-color: #E3F2FD;
+  --el-table-row-hover-bg-color: #F5F9FD;
+  --el-table-border-color: #E0E0E0;
+  --el-table-text-color: #{$text-primary};
+  --el-table-header-text-color: #{$primary-color};
+  
+  // 强制覆盖表格单元格样式
+  .el-table__body-wrapper {
+    .el-table__row {
+      background: $bg-card;
+      
+      td {
+        background: transparent;
+        color: $text-primary;
+      }
+      
+      &:hover td {
+        background: #F5F9FD !important;
+      }
+    }
+  }
+  
+  .el-table__header-wrapper {
+    th {
+      background: #E3F2FD !important;
+      color: $primary-color;
+      font-weight: 600;
+    }
+  }
+  
+  // 空数据时
+  .el-table__empty-block {
+    background: $bg-card;
+    color: $text-secondary;
+  }
+}
+
+// 按钮样式
+.cyber-btn {
+  background: linear-gradient(135deg, rgba(33, 150, 243, 0.1) 0%, rgba(33, 150, 243, 0.05) 100%);
+  border: 1px solid $primary-color;
+  color: $primary-color;
+  
+  &:hover {
+    background: linear-gradient(135deg, rgba(33, 150, 243, 0.2) 0%, rgba(33, 150, 243, 0.1) 100%);
+    box-shadow: 0 2px 12px rgba(33, 150, 243, 0.3);
+  }
+}
+
+// 统计卡片
+.stat-card {
+  background: $bg-card;
+  border: 1px solid $border-color;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  
+  .stat-value {
+    font-size: 28px;
+    font-weight: 600;
+    color: $primary-color;
+    margin-bottom: 8px;
+  }
+  
+  .stat-label {
+    font-size: 14px;
+    color: $text-secondary;
+  }
+}
+
+// 滚动条样式
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(33, 150, 243, 0.4);
+  border-radius: 3px;
+  
+  &:hover {
+    background: rgba(33, 150, 243, 0.6);
+  }
+}
+
+// Element Plus 组件覆盖
+.el-card {
+  background: $bg-card;
+  border: 1px solid $border-color;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  
+  &__header {
+    border-bottom-color: #E0E0E0;
+  }
+}
+
+.el-dialog {
+  background: $bg-card;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  
+  &__header {
+    border-bottom: 1px solid #E0E0E0;
+  }
+  
+  &__title {
+    color: $text-primary;
+  }
+}
+
+.el-menu {
+  background: transparent;
+  border-right-color: rgba(33, 150, 243, 0.2);
+}
+
+.el-dropdown-menu {
+  background: $bg-card;
+  border: 1px solid $border-color;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  
+  &__item {
+    color: $text-primary;
+    
+    &:hover {
+      background: #F5F9FD;
+      color: $primary-color;
+    }
+  }
+}
+
+.el-message-box {
+  background: $bg-card;
+  border: 1px solid $border-color;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  
+  &__title {
+    color: $text-primary;
+  }
+  
+  &__content {
+    color: $text-secondary;
+  }
+}
+
+.el-input {
+  &__wrapper {
+    background: $bg-card;
+    box-shadow: 0 0 0 1px #E0E0E0 inset;
+    
+    &:hover {
+      box-shadow: 0 0 0 1px $primary-color inset;
+    }
+    
+    &.is-focus {
+      box-shadow: 0 0 0 1px $primary-color inset;
+    }
+  }
+  
+  &__inner {
+    color: $text-primary;
+    
+    &::placeholder {
+      color: #9E9E9E;
+    }
+  }
+}
+
+.el-select {
+  .el-input {
+    &__wrapper {
+      background: $bg-card;
+    }
+  }
+}
+
+.el-select-dropdown {
+  background: $bg-card;
+  border: 1px solid $border-color;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  
+  &__item {
+    color: $text-primary;
+    
+    &:hover {
+      background: #F5F9FD;
+    }
+    
+    &.is-selected {
+      color: $primary-color;
+      font-weight: 600;
+    }
+  }
+}
+
+.el-pagination {
+  .el-pager li {
+    background: $bg-card;
+    color: $text-primary;
+    border: 1px solid #E0E0E0;
+    
+    &:hover {
+      color: $primary-color;
+    }
+    
+    &.is-active {
+      background: $primary-color;
+      color: #FFFFFF;
+    }
+  }
+  
+  button {
+    background: $bg-card;
+    color: $text-primary;
+    border: 1px solid #E0E0E0;
+    
+    &:hover {
+      color: $primary-color;
+    }
+    
+    &:disabled {
+      color: #BDBDBD;
+    }
+  }
+}
+
+.el-form-item {
+  &__label {
+    color: $text-primary;
+  }
+}
+
+.el-radio {
+  &__label {
+    color: $text-primary;
+  }
+  
+  &__input.is-checked + .el-radio__label {
+    color: $primary-color;
+  }
+}
+
+.el-checkbox {
+  &__label {
+    color: $text-primary;
+  }
+  
+  &__input.is-checked + .el-checkbox__label {
+    color: $primary-color;
+  }
+}
+
+.el-switch {
+  &__core {
+    background: #BDBDBD;
+  }
+  
+  &.is-checked .el-switch__core {
+    background: $primary-color;
+  }
+}
+
+.el-tag {
+  border-color: transparent;
+  
+  &.el-tag--success {
+    background: #E8F5E9;
+    color: #4CAF50;
+  }
+  
+  &.el-tag--warning {
+    background: #FFF3E0;
+    color: #FF9800;
+  }
+  
+  &.el-tag--danger {
+    background: #FFEBEE;
+    color: #F44336;
+  }
+  
+  &.el-tag--info {
+    background: #F5F5F5;
+    color: #757575;
+  }
+}
+
+.el-button {
+  &--primary {
+    background: $primary-color;
+    border-color: $primary-color;
+    
+    &:hover {
+      background: #1976D2;
+      border-color: #1976D2;
+    }
+  }
+  
+  &--success {
+    background: #4CAF50;
+    border-color: #4CAF50;
+    
+    &:hover {
+      background: #388E3C;
+      border-color: #388E3C;
+    }
+  }
+  
+  &--warning {
+    background: #FF9800;
+    border-color: #FF9800;
+    
+    &:hover {
+      background: #F57C00;
+      border-color: #F57C00;
+    }
+  }
+  
+  &--danger {
+    background: #F44336;
+    border-color: #F44336;
+    
+    &:hover {
+      background: #D32F2F;
+      border-color: #D32F2F;
+    }
+  }
+  
+  &--info {
+    background: #757575;
+    border-color: #757575;
+    color: #FFFFFF;
+    
+    &:hover {
+      background: #616161;
+      border-color: #616161;
+    }
+  }
+  
+  &.is-text {
+    &:hover {
+      background: rgba(33, 150, 243, 0.1);
+    }
+  }
+}
+
+.el-loading-mask {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.el-message {
+  background: $bg-card;
+  border: 1px solid $border-color;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  
+  &__content {
+    color: $text-primary;
+  }
+}
+
+.el-notification {
+  background: $bg-card;
+  border: 1px solid $border-color;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  
+  &__title {
+    color: $text-primary;
+  }
+  
+  &__content {
+    color: $text-secondary;
+  }
+}
+

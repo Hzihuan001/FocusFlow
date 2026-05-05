@@ -1,0 +1,46 @@
+flowchart TD
+    Start([专注开始]) --> StartService[启动前台服务<br/>ForegroundService]
+    StartService --> ShowNotif[显示持续性通知<br/>Notification]
+    ShowNotif --> BoostPriority[进程oom_adj值<br/>提升到前台级别]
+    BoostPriority --> AcquireLock[获取PARTIAL_WAKE_LOCK<br/>唤醒锁]
+    AcquireLock --> PreventSleep[阻止CPU进入<br/>深度休眠]
+    PreventSleep --> SetAlarm[使用setExactAndAllowWhileIdle<br/>调度Alarm]
+    SetAlarm --> CheckDoze{系统进入<br/>Doze模式?}
+    
+    CheckDoze -->|是| AlarmWhitelist[Alarm仍可触发<br/>白名单机制]
+    CheckDoze -->|否| NormalRun1[正常运行]
+    
+    AlarmWhitelist --> CheckMemory{系统内存<br/>压力大?}
+    NormalRun1 --> CheckMemory
+    
+    CheckMemory -->|是| HighPriority[前台服务优先级高<br/>不易被杀]
+    CheckMemory -->|否| NormalRun2[正常运行]
+    
+    HighPriority --> CheckKilled{服务被<br/>系统终止?}
+    NormalRun2 --> CheckKilled
+    
+    CheckKilled -->|是| AutoRestart[START_STICKY标志<br/>自动重启]
+    CheckKilled -->|否| Continue[继续运行]
+    
+    AutoRestart --> Continue
+    Continue --> FocusEnd{专注结束?}
+    
+    FocusEnd -->|否| CheckDoze
+    FocusEnd -->|是| ReleaseLock[释放WakeLock]
+    
+    ReleaseLock --> StopService[停止前台服务]
+    StopService --> RemoveNotif[移除通知]
+    RemoveNotif --> End([结束])
+    
+    style Start fill:#00ff9f,stroke:#00ff9f,color:#000
+    style CheckDoze fill:#b026ff,stroke:#b026ff,color:#fff
+    style CheckMemory fill:#b026ff,stroke:#b026ff,color:#fff
+    style CheckKilled fill:#b026ff,stroke:#b026ff,color:#fff
+    style FocusEnd fill:#b026ff,stroke:#b026ff,color:#fff
+    style AutoRestart fill:#ffd93d,stroke:#ffd93d,color:#000
+    style HighPriority fill:#6bcf7f,stroke:#6bcf7f,color:#000
+    style End fill:#ff6b6b,stroke:#ff6b6b,color:#fff
+    
+    Note1["非Root环境局限性:<br/>厂商定制ROM可能<br/>实施更激进的后台查杀"]
+    
+    style Note1 fill:#1a1a2e,stroke:#ff6b6b,stroke-width:2px,color:#fff

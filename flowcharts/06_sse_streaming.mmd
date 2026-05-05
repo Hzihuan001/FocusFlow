@@ -1,0 +1,30 @@
+sequenceDiagram
+    participant User as 用户
+    participant Client as Android客户端
+    participant Server as 云端服务器
+    participant LLM as 大语言模型API
+    
+    User->>Client: 输入问题
+    Client->>Server: 发起SSE连接请求
+    activate Server
+    Server->>LLM: 转发问题 + 系统提示词
+    activate LLM
+    
+    LLM->>LLM: 开始生成Token
+    
+    loop 流式生成
+        LLM->>Server: 返回增量Token
+        Server->>Client: 推送"add"事件<br/>data: {token}
+        Client->>Client: StateFlow更新
+        Client->>Client: Compose自动重组<br/>局部重绘Text组件
+        Client->>User: 显示"打字机"效果
+    end
+    
+    LLM->>Server: 生成完毕
+    deactivate LLM
+    Server->>Client: 推送"finish"事件
+    Client->>Client: 关闭SSE连接
+    Client->>Client: 对话历史持久化到本地
+    deactivate Server
+    
+    Note over Client,Server: SSE事件类型:<br/>add - 增量Token<br/>finish - 生成结束<br/>error - 错误信息

@@ -1,0 +1,84 @@
+<svg viewBox="0 0 860 560" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;font-family:'Microsoft YaHei','SimHei','PingFang SC',sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,1 L9,5 L0,9 Z" fill="#222"/>
+    </marker>
+    <marker id="arrow-start" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M10,1 L1,5 L10,9 Z" fill="#222"/>
+    </marker>
+  </defs>
+
+  <!-- ===== 顶部：客户端层 ===== -->
+
+  <!-- Android 客户端 -->
+  <rect x="80" y="50" width="250" height="70" rx="6" fill="#fff" stroke="#222" stroke-width="2"/>
+  <text x="205" y="82" text-anchor="middle" fill="#222" font-size="16" font-weight="600">Android 客户端</text>
+  <text x="205" y="104" text-anchor="middle" fill="#555" font-size="12">Kotlin + Jetpack Compose</text>
+
+  <!-- Web 管理后台 -->
+  <rect x="530" y="50" width="250" height="70" rx="6" fill="#fff" stroke="#222" stroke-width="2"/>
+  <text x="655" y="82" text-anchor="middle" fill="#222" font-size="16" font-weight="600">Web 管理后台</text>
+  <text x="655" y="104" text-anchor="middle" fill="#555" font-size="12">Vue.js + Element Plus</text>
+
+  <!-- ===== 中间：后端服务 ===== -->
+
+  <rect x="235" y="230" width="390" height="70" rx="6" fill="#fff" stroke="#222" stroke-width="2"/>
+  <text x="430" y="262" text-anchor="middle" fill="#222" font-size="16" font-weight="600">Java 后端 (Spring Boot)</text>
+  <text x="430" y="284" text-anchor="middle" fill="#555" font-size="12">MyBatis-Plus + HikariCP</text>
+
+  <!-- ===== 外部AI服务 ===== -->
+
+  <rect x="720" y="230" width="120" height="70" rx="6" fill="#fff" stroke="#222" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="780" y="260" text-anchor="middle" fill="#222" font-size="14" font-weight="600">智谱AI</text>
+  <text x="780" y="280" text-anchor="middle" fill="#555" font-size="11">大模型服务</text>
+
+  <!-- ===== 本地Room数据库 ===== -->
+
+  <!-- Room cylinder -->
+  <ellipse cx="110" cy="380" rx="70" ry="14" fill="#fff" stroke="#222" stroke-width="1.8"/>
+  <rect x="40" y="380" width="140" height="45" fill="#fff" stroke="none"/>
+  <line x1="40" y1="380" x2="40" y2="425" stroke="#222" stroke-width="1.8"/>
+  <line x1="180" y1="380" x2="180" y2="425" stroke="#222" stroke-width="1.8"/>
+  <ellipse cx="110" cy="425" rx="70" ry="14" fill="#fff" stroke="#222" stroke-width="1.8"/>
+  <text x="110" y="407" text-anchor="middle" fill="#222" font-size="14" font-weight="600">Room 数据库</text>
+  <text x="110" y="450" text-anchor="middle" fill="#555" font-size="11">本地离线存储</text>
+
+  <!-- ===== 底部：MySQL数据库 ===== -->
+
+  <!-- MySQL cylinder -->
+  <ellipse cx="430" cy="440" rx="110" ry="16" fill="#fff" stroke="#222" stroke-width="1.8"/>
+  <rect x="320" y="440" width="220" height="50" fill="#fff" stroke="none"/>
+  <line x1="320" y1="440" x2="320" y2="490" stroke="#222" stroke-width="1.8"/>
+  <line x1="540" y1="440" x2="540" y2="490" stroke="#222" stroke-width="1.8"/>
+  <ellipse cx="430" cy="490" rx="110" ry="16" fill="#fff" stroke="#222" stroke-width="1.8"/>
+  <text x="430" y="472" text-anchor="middle" fill="#222" font-size="15" font-weight="600">MySQL 数据库</text>
+  <text x="430" y="518" text-anchor="middle" fill="#555" font-size="11">focus_flow</text>
+
+  <!-- ===== 连线与标注 ===== -->
+
+  <!-- Android → 后端 -->
+  <line x1="205" y1="120" x2="350" y2="230" stroke="#222" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="230" y="168" fill="#222" font-size="11" transform="rotate(32,230,168)">RESTful API / SSE 流式对话</text>
+
+  <!-- Web → 后端 -->
+  <line x1="655" y1="120" x2="510" y2="230" stroke="#222" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="640" y="168" fill="#222" font-size="11" transform="rotate(-32,640,168)">RESTful API 请求 / 响应</text>
+
+  <!-- 后端 → 智谱AI -->
+  <line x1="625" y1="265" x2="720" y2="265" stroke="#222" stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#arrow)"/>
+  <text x="672" y="255" text-anchor="middle" fill="#222" font-size="10">SSE 代理转发</text>
+
+  <!-- 后端 → MySQL 数据存储 -->
+  <line x1="390" y1="300" x2="380" y2="440" stroke="#222" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="358" y="375" fill="#222" font-size="11">数据存储</text>
+
+  <!-- MySQL → 后端 数据读取 -->
+  <line x1="470" y1="440" x2="470" y2="300" stroke="#222" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="480" y="375" fill="#222" font-size="11">数据读取</text>
+
+  <!-- Android ↔ Room 本地优先读写 -->
+  <line x1="155" y1="120" x2="120" y2="380" stroke="#222" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="140" y1="380" x2="175" y2="120" stroke="#222" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="88" y="250" fill="#222" font-size="11" transform="rotate(-78,88,250)">本地优先读写</text>
+
+</svg>

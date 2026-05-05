@@ -1,0 +1,117 @@
+# ============================================================
+# FocusFlow 项目 .gitignore
+# 创建日期：2026-04-29
+# ============================================================
+
+# ============================================================
+# IDE 配置文件（不上传）
+# ============================================================
+.idea/
+.vscode/
+.agents/
+.kiro/
+.opencode/
+*.iml
+*.swp
+*.swo
+*~
+
+# ============================================================
+# Node.js 依赖和构建产物
+# ============================================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# 前端构建产物
+FocusFlow_Front/dist/
+FocusFlow_Front/dist-ssr/
+FocusFlow_Front/.vite/
+FocusFlow_Front/.cache/
+
+# ============================================================
+# Android 构建产物
+# ============================================================
+FocusFlow_App/.gradle/
+FocusFlow_App/.kotlin/
+FocusFlow_App/build/
+FocusFlow_App/app/build/
+FocusFlow_App/local.properties
+FocusFlow_App/.cxx/
+FocusFlow_App/.externalNativeBuild/
+FocusFlow_App/captures/
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+
+# ============================================================
+# Java/Spring Boot 构建产物
+# ============================================================
+FocusFlow_Server/target/
+FocusFlow_Server/.mvn/
+FocusFlow_Server/mvnw
+FocusFlow_Server/mvnw.cmd
+*.jar
+*.war
+*.ear
+*.class
+
+# ============================================================
+# 运行时生成的文件
+# ============================================================
+FocusFlow_Server/uploads/
+FocusFlow_Server/logs/
+*.log
+
+# ============================================================
+# 环境配置文件（包含敏感信息）
+# ============================================================
+.env
+.env.local
+.env.production
+.env.*.local
+FocusFlow_Front/.env.production
+
+# 保留示例配置文件
+!.env.example
+!.env.production.example
+
+# ============================================================
+# 临时文件和缓存
+# ============================================================
+*.tmp
+*.temp
+*.cache
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ============================================================
+# 根目录临时文件（清理用）
+# ============================================================
+/read_docx.js
+/thesis_analysis.json
+/skills-lock.json
+/package.json
+/package-lock.json
+
+# ============================================================
+# 保留的重要文件（明确说明）
+# ============================================================
+# DOC/DevLogs_架构与开发日志/ - 开发日志（必须保留）
+# DOC/sql/ - 数据库脚本
+# DOC/*.docx, *.svg, *.xlsx - 设计文档
+# flowcharts/ - 流程图
+# 毕业论文/ - 论文相关文件
+# *.md - Markdown 文档
+
+# ============================================================
+# Git 相关
+# ============================================================
+.git/
+.gitattributes

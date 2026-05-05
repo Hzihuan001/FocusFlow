@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 主题颜色在 ui/theme/Color.kt 中定义，此处仅保留必要资源 -->
+    
+    <!-- 启动页背景色 - 与 SplashScreen.kt 保持一致 -->
+    <color name="splash_background">#010707</color>
+</resources>

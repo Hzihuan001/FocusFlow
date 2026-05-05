@@ -1,0 +1,39 @@
+graph TB
+    subgraph Android["Android 客户端"]
+        UI["表现层<br/>Jetpack Compose<br/>声明式UI"]
+        MVI["应用架构层<br/>MVI模式<br/>StateFlow响应式"]
+        Service["系统管控服务层<br/>悬浮窗锁屏<br/>防逃逸检测"]
+        Data["数据网络层<br/>Room本地存储<br/>Retrofit网络通信"]
+    end
+    
+    subgraph Web["Web 后台管理端"]
+        Vue["Vue 3 + Vite"]
+        Element["Element Plus UI"]
+        ECharts["ECharts 数据可视化"]
+    end
+    
+    subgraph Server["云端服务器"]
+        Controller["Controller层<br/>请求处理"]
+        Service2["Service层<br/>业务逻辑"]
+        Mapper["Mapper层<br/>MyBatis-Plus"]
+        MySQL["MySQL数据库"]
+    end
+    
+    UI --> MVI
+    MVI --> Service
+    Service --> Data
+    
+    Data -->|"RESTful API<br/>本地优先同步"| Controller
+    Vue --> Controller
+    Element --> Vue
+    ECharts --> Vue
+    
+    Controller --> Service2
+    Service2 --> Mapper
+    Mapper --> MySQL
+    
+    Data -.->|"SSE流式传输<br/>AI对话"| Controller
+    
+    style Android fill:#1a1a2e,stroke:#00ff9f,stroke-width:2px,color:#fff
+    style Web fill:#16213e,stroke:#b026ff,stroke-width:2px,color:#fff
+    style Server fill:#0f3460,stroke:#00d4ff,stroke-width:2px,color:#fff

@@ -1,0 +1,26 @@
+flowchart TD
+    Start([用户完成专注]) --> Generate[生成专注记录<br/>UUID, 时长, 起止时间]
+    Generate --> Sign[计算SHA-256签名<br/>记录字段 + 私钥]
+    Sign --> WriteLocal[写入Room本地数据库<br/>syncStatus=0]
+    WriteLocal --> CheckNet{网络是否<br/>可用?}
+    
+    CheckNet -->|否| Offline[保持本地<br/>离线模式]
+    CheckNet -->|是| Sync[批量同步到云端]
+    
+    Sync --> Verify[云端验证签名]
+    Verify --> CheckSign{签名是否<br/>有效?}
+    
+    CheckSign -->|否| Reject[拒绝入库<br/>返回错误]
+    CheckSign -->|是| Persist[持久化到MySQL]
+    
+    Persist --> Reward[触发游戏化奖励结算<br/>计算光流收益]
+    Reward --> UpdateLocal[更新本地syncStatus=1]
+    
+    Offline -.->|网络恢复| Sync
+    
+    style Start fill:#00ff9f,stroke:#00ff9f,color:#000
+    style Sign fill:#ffd93d,stroke:#ffd93d,color:#000
+    style CheckNet fill:#b026ff,stroke:#b026ff,color:#fff
+    style CheckSign fill:#b026ff,stroke:#b026ff,color:#fff
+    style Reject fill:#ff6b6b,stroke:#ff6b6b,color:#fff
+    style Reward fill:#6bcf7f,stroke:#6bcf7f,color:#000

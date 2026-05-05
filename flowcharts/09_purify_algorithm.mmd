@@ -1,0 +1,40 @@
+graph TD
+    subgraph Example["示例: 净化范围 r=2 的菱形区域"]
+        direction TB
+        A["(-2,0)"] 
+        B1["(-1,-1)"] 
+        B2["(-1,0)"] 
+        B3["(-1,1)"]
+        C1["(0,-2)"]
+        C2["(0,-1)"]
+        C3["(0,0) ★种植点"]
+        C4["(0,1)"]
+        C5["(0,2)"]
+        D1["(1,-1)"]
+        D2["(1,0)"]
+        D3["(1,1)"]
+        E["(2,0)"]
+    end
+    
+    Formula["净化地块数量公式:<br/>N(r) = 2r(r+1)<br/><br/>示例: N(2) = 2×2×(2+1) = 12块"]
+    
+    Algorithm["曼哈顿距离算法:<br/>dₘ = |x - cₓ| + |y - cᵧ|<br/>净化条件: dₘ ≤ r 且 (dx,dy) ≠ (0,0)"]
+    
+    Complexity["时间复杂度: O(r²)<br/>空间复杂度: O(r²)"]
+    
+    style C3 fill:#ff6b6b,stroke:#ff6b6b,color:#fff
+    style A fill:#00ff9f,stroke:#00ff9f,color:#000
+    style B1 fill:#00ff9f,stroke:#00ff9f,color:#000
+    style B2 fill:#00ff9f,stroke:#00ff9f,color:#000
+    style B3 fill:#00ff9f,stroke:#00ff9f,color:#000
+    style C1 fill:#00ff9f,stroke:#00ff9f,color:#000
+    style C2 fill:#00ff9f,stroke:#00ff9f,color:#000
+    style C4 fill:#00ff9f,stroke:#00ff9f,color:#000
+    style C5 fill:#00ff9f,stroke:#00ff9f,color:#000
+    style D1 fill:#00ff9f,stroke:#00ff9f,color:#000
+    style D2 fill:#00ff9f,stroke:#00ff9f,color:#000
+    style D3 fill:#00ff9f,stroke:#00ff9f,color:#000
+    style E fill:#00ff9f,stroke:#00ff9f,color:#000
+    style Formula fill:#4ecdc4,stroke:#4ecdc4,color:#000
+    style Algorithm fill:#b026ff,stroke:#b026ff,color:#fff
+    style Complexity fill:#ffd93d,stroke:#ffd93d,color:#000

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+════════════════════════════════════════════════════════════════════════════════
+FocusFlow Server 日志配置
+════════════════════════════════════════════════════════════════════════════════
+配置说明：
+1. 日志目录：/opt/focusflow/logs（可通过环境变量 LOG_PATH 覆盖）
+2. 按日期滚动：每天一个日志文件
+3. 自动清理：保留最近30天
+4. 仅输出业务日志：过滤框架无关日志
+════════════════════════════════════════════════════════════════════════════════
+-->
+<configuration scan="true" scanPeriod="30 seconds">
+    
+    <!-- 日志路径（支持环境变量覆盖） -->
+    <property name="LOG_PATH" value="${LOG_PATH:-/opt/focusflow/logs}"/>
+    <property name="APP_NAME" value="focusflow"/>
+    
+    <!-- 日志格式 -->
+    <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
+    
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- 控制台输出（开发调试用） -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- 文件输出（按日期滚动） -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 当前日志文件（固定名称，写入今天的日志） -->
+        <file>${LOG_PATH}/${APP_NAME}.log</file>
+        
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        
+        <!-- 滚动策略：按日期滚动 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 归档文件名格式（日期变更后自动重命名） -->
+            <fileNamePattern>${LOG_PATH}/${APP_NAME}.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- 保留最近30天 -->
+            <maxHistory>30</maxHistory>
+            <!-- 总大小限制 -->
+            <totalSizeCap>1GB</totalSizeCap>
+            <!-- 启动时清理过期归档 -->
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+    </appender>
+    
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- 错误日志单独输出 -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/${APP_NAME}-error.log</file>
+        
+        <!-- 只记录 ERROR 级别 -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/${APP_NAME}-error.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>500MB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+    
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- 日志级别配置 -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    
+    <!-- FocusFlow 业务日志：DEBUG 级别 -->
+    <logger name="com.focusflow" level="DEBUG" additivity="false">
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="ERROR_FILE"/>
+    </logger>
+    
+    <!-- Spring 框架日志：只记录 WARN 及以上 -->
+    <logger name="org.springframework" level="WARN"/>
+    <logger name="org.springframework.boot" level="WARN"/>
+    <logger name="org.springframework.web" level="WARN"/>
+    <logger name="org.springframework.security" level="WARN"/>
+    
+    <!-- 数据库相关：只记录 WARN 及以上 -->
+    <logger name="com.zaxxer.hikari" level="WARN"/>
+    <logger name="com.baomidou.mybatisplus" level="WARN"/>
+    <logger name="org.mybatis" level="WARN"/>
+    
+    <!-- Tomcat 容器：只记录 WARN 及以上 -->
+    <logger name="org.apache.catalina" level="WARN"/>
+    <logger name="org.apache.coyote" level="WARN"/>
+    <logger name="org.apache.tomcat" level="WARN"/>
+    
+    <!-- Hibernate/ORM：只记录 ERROR -->
+    <logger name="org.hibernate" level="ERROR"/>
+    
+    <!-- 其他框架：WARN 级别 -->
+    <logger name="io.netty" level="WARN"/>
+    <logger name="com.fasterxml.jackson" level="WARN"/>
+    
+    <!-- 根日志配置 -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="ERROR_FILE"/>
+    </root>
+    
+</configuration>

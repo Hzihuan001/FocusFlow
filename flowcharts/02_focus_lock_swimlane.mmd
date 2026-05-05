@@ -1,0 +1,36 @@
+sequenceDiagram
+    participant User as 用户
+    participant Overlay as 悬浮窗服务
+    participant Watcher as 防逃逸引擎
+    participant Foreground as 前台服务
+    
+    User->>Overlay: 启动专注
+    activate Overlay
+    Overlay->>Overlay: 创建WindowManager
+    Overlay->>Overlay: 添加全屏覆盖视图<br/>(TYPE_APPLICATION_OVERLAY)
+    Overlay->>Foreground: 启动前台服务
+    activate Foreground
+    Foreground->>Foreground: 显示持续性通知
+    Foreground->>Foreground: 提升进程oom_adj
+    
+    Overlay->>Watcher: 启动防逃逸监控
+    activate Watcher
+    
+    loop 每300ms轮询
+        Watcher->>Watcher: 查询UsageStatsManager
+        Watcher->>Watcher: 检测前台应用包名
+    end
+    
+    User->>User: 尝试切换应用
+    Watcher->>Watcher: 检测到逃逸行为
+    Watcher->>Overlay: 触发拉回Intent<br/>(50-100ms延迟)
+    Overlay->>User: 应用回到前台
+    
+    User->>Overlay: 完成专注
+    Overlay->>Watcher: 停止轮询
+    deactivate Watcher
+    Overlay->>Overlay: 移除悬浮窗视图
+    Overlay->>Foreground: 停止前台服务
+    deactivate Foreground
+    Overlay->>User: 显示专注结果
+    deactivate Overlay
