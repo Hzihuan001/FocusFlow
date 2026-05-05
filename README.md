@@ -207,57 +207,41 @@ cd FocusFlow_App
 
 ### APP界面
 
-<img src="DOC/screenshots/focus_APP1.png" width="300"/>
+<img src="DOC/screenshots/focus_APP1.png" width="800"/>
 
-<img src="DOC/screenshots/focus_APP2.png" width="300"/>
+<img src="DOC/screenshots/focus_APP2.png" width="800"/>
 
 ### 数据看板
 
-<img src="DOC/screenshots/focus_data1.png" width="300"/>
+<img src="DOC/screenshots/focus_data1.png" width="800"/>
 
-<img src="DOC/screenshots/focus_data2.png" width="300"/>
+<img src="DOC/screenshots/focus_data2.png" width="800"/>
 
 ### 专注模式
 
-<img src="DOC/screenshots/focus_mode1.png" width="300"/>
+<img src="DOC/screenshots/focus_mode1.png" width="800"/>
 
-<img src="DOC/screenshots/focus_mode2.png" width="300"/>
+<img src="DOC/screenshots/focus_mode2.png" width="800"/>
 
 ### 植物养成
-<img src="DOC/screenshots/plant_garden1.png" width="300"/>
+<img src="DOC/screenshots/plant_garden1.png" width="800"/>
 
 ### AI 助手
-<img src="DOC/screenshots/ai_chat1.png" width="300"/>
+<img src="DOC/screenshots/ai_chat1.png" width="800"/>
 
 ### 社交系统
 
-<img src="DOC/screenshots/focus_social1.png" width="600"/>
+<img src="DOC/screenshots/focus_social1.png" width="800"/>
 
 ### 管理后台
-<img src="DOC/screenshots/admin_dashboard1.png" width="600"/>
+<img src="DOC/screenshots/admin_dashboard1.png" width="800"/>
 
-## 📝 开发日志
 
-详细的开发过程记录在 `DOC/DevLogs_架构与开发日志/` 目录下，包括：
-- 架构设计决策
-- 技术难点解决方案
-- 功能迭代记录
-- Bug 修复日志
-
-## 🎓 毕业设计
-
-本项目为毕业设计作品，相关论文和文档位于 `毕业论文/` 目录。
 
 ## 📄 许可证
 
 本项目采用 MIT 许可证 - 详见 [LICENSE](LICENSE) 文件
 
-## 👨‍💻 作者
-
-**黄子桓**
-- 学号：32001192
-- 专业：软件工程
-- 邮箱：your-email@example.com
 
 ## 🙏 致谢
 
