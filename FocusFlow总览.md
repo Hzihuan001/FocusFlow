@@ -6,7 +6,7 @@ FocusFlow 是一款注意力管理应用，结合游戏化元素帮助用户提�
 
 - **Android 端** (`FocusFlow_App`): Kotlin 2.0.21 + Jetpack Compose，支持 Android 8.0+ (minSdk 26, targetSdk 34)
 - **后端服务** (`FocusFlow_Server`): Spring Boot 3.2.3 + Java 17 + MyBatis-Plus 3.5.5 + MySQL 8.0
-- **管理后台** (`FocusFlow_Front`): Vue 3.4 + Vite 5 + Element Plus 2.5 + ECharts 5.5
+- **管理后台** (`FocusFlow_Front`): Vue 3.4 + Vite 5 + Element Plus 2.5 + ECharts 5.5 + **浅色主题设计**
 
 ### 核心功能
 
@@ -121,14 +121,14 @@ F:\desktop\iflowtest\
 ├── FocusFlow_Front/              # Vue3 管理后台
 │   ├── src/
 │   │   ├── views/                # 页面组件
-│   │   │   ├── dashboard/        # 数据看板
-│   │   │   ├── user/             # 用户管理
-│   │   │   ├── plant/            # 植物图鉴
-│   │   │   ├── bag/              # 背包管理
-│   │   │   ├── focus/            # 专注记录
-│   │   │   ├── config/           # 系统配置（卡片化分组）
-│   │   │   ├── ai/               # AI 配置（独立模块）
-│   │   │   └── login/            # 登录页
+│   │   │   ├── dashboard/        # 数据看板（浅色主题）
+│   │   │   ├── user/             # 用户管理（浅色主题）
+│   │   │   ├── plant/            # 植物图鉴（浅色主题）
+│   │   │   ├── bag/              # 背包管理（浅色主题）
+│   │   │   ├── focus/            # 专注记录（浅色主题）
+│   │   │   ├── config/           # 系统配置（卡片化分组，浅色主题）
+│   │   │   ├── ai/               # AI 配置（独立模块，浅色主题）
+│   │   │   └── login/            # 登录页（浅色主题）
 │   │   ├── api/                  # API 请求封装
 │   │   │   ├── request.js        # Axios 封装
 │   │   │   ├── config.js         # 配置 API
@@ -136,8 +136,8 @@ F:\desktop\iflowtest\
 │   │   │   ├── plant.js          # 植物 API
 │   │   │   └── user.js           # 用户 API
 │   │   ├── router/               # 路由配置
-│   │   ├── layout/               # 布局组件
-│   │   └── styles/               # 样式文件
+│   │   ├── layout/               # 布局组件（浅色主题）
+│   │   └── styles/               # 样式文件（浅色主题 SCSS 变量）
 │   ├── vite.config.js            # Vite 配置 (端口 3000)
 │   └── package.json
 │
@@ -189,10 +189,10 @@ F:\desktop\iflowtest\
 | 框架 | Vue 3.4.21 + Vite 5.1.6 |
 | UI 组件 | Element Plus 2.5.6 |
 | 状态管理 | Pinia 2.1.7 |
-| 图表 | ECharts 5.5.0 |
+| 图表 | ECharts 5.5.0（浅色主题配置） |
 | HTTP | Axios 1.6.7 |
 | 日期 | Day.js 1.11.10 |
-| 样式 | SCSS |
+| 样式 | SCSS（浅色主题变量系统） |
 
 ---
 
@@ -409,10 +409,26 @@ signature = SHA256(recordId + userId + taskName + durationMinutes + startTime + 
 
 ### UI 设计风格
 
+**Android 端：**
 应用采用赛博朋克视觉风格，主题色定义在 `ui/theme/Color.kt`：
 - `CyberBgDeep`: 深色背景 (#0D0D1A)
 - `CyberPrimary`: 主色调霓虹绿 (#00FF9F)
 - `CyberAccent`: 强调色霓虹粉 (#FF00FF)
+
+**管理后台（2026-04-29 更新）：**
+采用浅色 Material Design 风格，主题色定义在 `src/styles/index.scss`：
+- `$bg-light`: 背景色 (#FAFAFA)
+- `$primary-color`: 主色调 Material Blue (#2196F3)
+- `$bg-card`: 卡片背景 (#FFFFFF)
+- `$text-primary`: 主文字 (#1A1A1A)
+- `$text-secondary`: 次要文字 (#757575)
+- `$border-color`: 边框色 (rgba(33, 150, 243, 0.2))
+
+**设计特点：**
+- ✅ 符合 WCAG AA 对比度标准（4.5:1）
+- ✅ 适合白天和强光环境使用
+- ✅ 所有页面和组件统一浅色主题
+- ✅ ECharts 图表完整适配浅色配色
 
 ### 导航结构
 
@@ -476,6 +492,7 @@ CREATE DATABASE focus_flow DEFAULT CHARACTER SET utf8mb4;
 - `DOC/DEPLOYMENT_GUIDE.md` - 部署指南
 - `DOC/QUICK_DEPLOY_UBUNTU2404.md` - Ubuntu 快速部署
 - `DOC/DevLogs_架构与开发日志/` - 按日期的开发日志
+  - `2026-04-29_管理后台浅色主题迁移.md` - **浅色主题完整实现**
   - `2026-04-09_后管端功能优化与体验改进.md` - 后管端优化
   - `2026-04-09_植物图鉴云端同步优化.md` - 植物同步优化
   - `2026-04-08_后管端登录页改造与部署优化.md` - 登录页改造
