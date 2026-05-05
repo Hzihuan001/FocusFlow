@@ -18,7 +18,7 @@
 ## 📖 项目简介
 
 FocusFlow 是一款创新的注意力管理应用，结合了：
-- 🍅 **番茄工作法**：科学的时间管理方法
+- 🍅 **番茄工作法/自定义模式**：科学的时间管理方法或自定义
 - 🌱 **虚拟植物养成**：通过专注时长培养虚拟植物，增强成就感
 - 🤖 **AI 智能助手**：基于大模型的个性化学习伙伴
 - 🔒 **防逃逸机制**：UsageStatsManager + 悬浮窗锁屏，确保专注质量
@@ -229,10 +229,12 @@ cd FocusFlow_App
 ### AI 助手
 <img src="DOC/screenshots/ai_chat1.png" width="300"/>
 
-<img src="DOC/screenshots/ai_chat2.png" width="300"/>
+### 社交系统
+
+<img src="DOC/screenshots/focus_social1.png" width="600"/>
 
 ### 管理后台
-<img src="DOC/screenshots/admin_dashboard.png" width="600"/>
+<img src="DOC/screenshots/admin_dashboard1.png" width="600"/>
 
 ## 📝 开发日志
 
@@ -270,6 +272,5 @@ cd FocusFlow_App
 
 <div align="center">
   Made with ❤️ by 黄子桓
-
   如果这个项目对你有帮助，请给个 ⭐️ Star！
 </div>
