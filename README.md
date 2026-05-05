@@ -2,11 +2,12 @@
 
 <div align="center">
   <img src="logo.png" alt="FocusFlow Logo" width="120"/>
-  
+
+
   **专注力培养 × 虚拟植物养成 × AI 助手**
-  
+
   一款基于番茄工作法的注意力管理 APP，通过虚拟植物养成和 AI 助手，帮助用户建立专注习惯
-  
+
   [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
   [![Android](https://img.shields.io/badge/Android-26%2B-green.svg)](https://developer.android.com)
   [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.3-brightgreen.svg)](https://spring.io/projects/spring-boot)
@@ -18,6 +19,7 @@
 ## 📖 项目简介
 
 FocusFlow 是一款创新的注意力管理应用，结合了：
+
 - 🍅 **番茄工作法**：科学的时间管理方法
 - 🌱 **虚拟植物养成**：通过专注时长培养虚拟植物，增强成就感
 - 🤖 **AI 智能助手**：基于大模型的个性化学习伙伴
@@ -27,6 +29,7 @@ FocusFlow 是一款创新的注意力管理应用，结合了：
 ## 🏗️ 技术架构
 
 ### 系统架构
+
 ```
 ┌─────────────────────────────────────────────────────────┐
 │                    FocusFlow 系统                        │
@@ -55,37 +58,42 @@ FocusFlow 是一款创新的注意力管理应用，结合了：
 
 ### 技术栈
 
-| 模块 | 技术栈 | 版本 |
-|------|--------|------|
+| 模块               | 技术栈                          | 版本           |
+| ------------------ | ------------------------------- | -------------- |
 | **Android 客户端** | Kotlin + Jetpack Compose + Room | 2.0.21 / 2.6.1 |
-| **后端服务** | Spring Boot + MyBatis-Plus | 3.2.3 / 3.5.5 |
-| **管理后台** | Vue 3 + Vite + Element Plus | 3.4 / 5.0 |
-| **数据库** | MySQL | 8.0 |
-| **AI 集成** | 智谱AI GLM-4 / OpenAI GPT-4 | - |
+| **后端服务**       | Spring Boot + MyBatis-Plus      | 3.2.3 / 3.5.5  |
+| **管理后台**       | Vue 3 + Vite + Element Plus     | 3.4 / 5.0      |
+| **数据库**         | MySQL                           | 8.0            |
+| **AI 集成**        | 智谱AI GLM-4 / OpenAI GPT-4     | -              |
 
 ## ✨ 核心功能
 
 ### 1. 专注模式
-- 🎯 **番茄工作法**：25/52 分钟专注时长
+
+- 🎯 **番茄工作法/自定义模式**：25/52 分钟专注时长或自定义
 - 🔒 **防逃逸机制**：300ms 轮询检测 + 悬浮窗锁屏
 - 📊 **数据统计**：专注时长、连续天数、历史记录
 
 ### 2. 虚拟植物养成
+
 - 🌱 **植物状态机**：VIBRANT → WARNING → WITHERED
 - 🎨 **多样化植物**：不同稀有度和外观
 - 💧 **净化机制**：专注时长转化为植物成长
 
 ### 3. AI 智能助手
+
 - 🤖 **个性化对话**：基于大模型的智能交互
 - 📝 **Prompt 动态配置**：管理后台实时调整
 - 🔄 **SSE 流式响应**：实时打字机效果
 
 ### 4. 数据同步
+
 - 💾 **本地优先**：Room 本地存储，离线可用
 - ☁️ **云端同步**：联网自动同步到 MySQL
 - 🔐 **防篡改签名**：SHA-256 签名验证
 
 ### 5. 管理后台
+
 - 📊 **数据可视化**：ECharts 图表展示
 - 👥 **用户管理**：批量操作、光流调整
 - 🎨 **浅色主题**：Material Design 风格
@@ -136,17 +144,20 @@ FocusFlow/
 ## 🚀 快速开始
 
 ### 环境要求
+
 - **Android 开发**：Android Studio Hedgehog+, JDK 17, Android SDK 26+
 - **后端开发**：JDK 17, Maven 3.8+, MySQL 8.0
 - **前端开发**：Node.js 18+, npm 9+
 
 ### 1. 克隆项目
+
 ```bash
 git clone https://github.com/your-username/FocusFlow.git
 cd FocusFlow
 ```
 
 ### 2. 数据库初始化
+
 ```bash
 # 连接 MySQL
 mysql -u root -p
@@ -162,6 +173,7 @@ mysql -u root -p focus_flow < DOC/sql/mock_data_realtime.sql
 ```
 
 ### 3. 启动后端服务
+
 ```bash
 cd FocusFlow_Server
 
@@ -176,6 +188,7 @@ mvn spring-boot:run
 ```
 
 ### 4. 启动管理后台
+
 ```bash
 cd FocusFlow_Front
 
@@ -190,6 +203,7 @@ npm run dev
 ```
 
 ### 5. 构建 Android 应用
+
 ```bash
 cd FocusFlow_App
 
@@ -205,21 +219,44 @@ cd FocusFlow_App
 
 ## 📊 核心功能演示
 
+### APP界面
+
+<img src="DOC/screenshots/focus_APP1.png" width="300"/>
+
+<img src="DOC/screenshots/focus_APP2.png" width="300"/>
+
+### 数据看板
+
+<img src="DOC/screenshots/focus_data1.png" width="300"/>
+
+<img src="DOC/screenshots/focus_data2.png" width="300"/>
+
 ### 专注模式
-<img src="DOC/screenshots/focus_mode.png" width="300"/>
+
+<img src="DOC/screenshots/focus_mode1.png" width="300"/>
+
+<img src="DOC/screenshots/focus_mode2.png" width="300"/>
 
 ### 植物养成
-<img src="DOC/screenshots/plant_garden.png" width="300"/>
+
+<img src="DOC/screenshots/plant_garden1.png" width="300"/>
 
 ### AI 助手
-<img src="DOC/screenshots/ai_chat.png" width="300"/>
+
+<img src="DOC/screenshots/ai_chat1.png" width="300"/>
+
+### 社交系统
+
+<img src="DOC/screenshots/focus_social1.png" width="600"/>
 
 ### 管理后台
-<img src="DOC/screenshots/admin_dashboard.png" width="600"/>
+
+<img src="DOC/screenshots/admin_dashboard1.png" width="600"/>
 
 ## 📝 开发日志
 
 详细的开发过程记录在 `DOC/DevLogs_架构与开发日志/` 目录下，包括：
+
 - 架构设计决策
 - 技术难点解决方案
 - 功能迭代记录
@@ -236,11 +273,15 @@ cd FocusFlow_App
 ## 👨‍💻 作者
 
 **黄子桓**
-- 邮箱：851834987@qq.com
+
+- 学号：32001192
+- 专业：软件工程
+- 邮箱：your-email@example.com
 
 ## 🙏 致谢
 
 感谢以下开源项目和服务：
+
 - [Jetpack Compose](https://developer.android.com/jetpack/compose)
 - [Spring Boot](https://spring.io/projects/spring-boot)
 - [Vue.js](https://vuejs.org)
@@ -251,6 +292,7 @@ cd FocusFlow_App
 
 <div align="center">
   Made with ❤️ by 黄子桓
-  
+
+
   如果这个项目对你有帮助，请给个 ⭐️ Star！
 </div>
