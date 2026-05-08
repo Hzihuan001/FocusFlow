@@ -56,6 +56,13 @@ class FocusService : Service() {
     private val binder = LocalBinder()
     private var timerJob: Job? = null
     private val serviceScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+    
+    // WakeLock - 防止锁屏后被系统杀掉
+    private var wakeLock: android.os.PowerManager.WakeLock? = null
+    
+    // 音频焦点 - 增强保活（番茄Todo的技巧）
+    private var audioManager: android.media.AudioManager? = null
+    private var audioFocusRequest: android.media.AudioFocusRequest? = null
 
     // 参数记录
     var cycleFocusSeconds = 0L  // 每小轮专注时长（配置值，如25分 = 1500秒）
@@ -68,12 +75,23 @@ class FocusService : Service() {
     }
 
     override fun onBind(intent: Intent): IBinder = binder
+    
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        android.util.Log.d("FocusService", "onStartCommand called")
+        return START_STICKY  // 服务被杀后自动重启
+    }
 
     override fun onCreate() {
         super.onCreate()
         createNotificationChannel()
         // Android 8.0+ 要求服务启动后 5 秒内必须调用 startForeground
         startForegroundImmediate()
+        
+        // 获取 WakeLock 防止锁屏后被杀掉
+        acquireWakeLock()
+        
+        // 请求音频焦点增强保活
+        requestAudioFocus()
     }
     
     private fun startForegroundImmediate() {
@@ -93,6 +111,113 @@ class FocusService : Service() {
             }
         } catch (e: Exception) {
             android.util.Log.e("FocusService", "startForeground failed", e)
+        }
+    }
+    
+    /**
+     * 获取 WakeLock 防止锁屏后被系统杀掉
+     */
+    private fun acquireWakeLock() {
+        try {
+            val powerManager = getSystemService(Context.POWER_SERVICE) as android.os.PowerManager
+            wakeLock = powerManager.newWakeLock(
+                android.os.PowerManager.PARTIAL_WAKE_LOCK,
+                "FocusFlow::FocusServiceWakeLock"
+            ).apply {
+                acquire(10 * 60 * 60 * 1000L) // 最长10小时
+            }
+            android.util.Log.d("FocusService", "WakeLock 已获取")
+        } catch (e: Exception) {
+            android.util.Log.e("FocusService", "获取 WakeLock 失败", e)
+        }
+    }
+    
+    /**
+     * 释放 WakeLock
+     */
+    private fun releaseWakeLock() {
+        try {
+            wakeLock?.let {
+                if (it.isHeld) {
+                    it.release()
+                    android.util.Log.d("FocusService", "WakeLock 已释放")
+                }
+            }
+            wakeLock = null
+        } catch (e: Exception) {
+            android.util.Log.e("FocusService", "释放 WakeLock 失败", e)
+        }
+    }
+    
+    /**
+     * 请求音频焦点 - 增强保活
+     * 
+     * 原理：持有音频焦点的应用被系统认为正在播放音频，优先级更高
+     * 这是番茄Todo、Forest等专注应用的核心保活技巧
+     */
+    private fun requestAudioFocus() {
+        try {
+            audioManager = getSystemService(Context.AUDIO_SERVICE) as android.media.AudioManager
+            
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                // Android 8.0+ 使用 AudioFocusRequest
+                val audioAttributes = android.media.AudioAttributes.Builder()
+                    .setUsage(android.media.AudioAttributes.USAGE_MEDIA)
+                    .setContentType(android.media.AudioAttributes.CONTENT_TYPE_MUSIC)
+                    .build()
+                
+                audioFocusRequest = android.media.AudioFocusRequest.Builder(android.media.AudioManager.AUDIOFOCUS_GAIN)
+                    .setAudioAttributes(audioAttributes)
+                    .setWillPauseWhenDucked(false)
+                    .setAcceptsDelayedFocusGain(true)
+                    .setOnAudioFocusChangeListener { focusChange ->
+                        // 不处理焦点变化，只是持有焦点
+                        android.util.Log.d("FocusService", "音频焦点变化: $focusChange")
+                    }
+                    .build()
+                
+                val result = audioManager?.requestAudioFocus(audioFocusRequest!!)
+                if (result == android.media.AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+                    android.util.Log.d("FocusService", "音频焦点已获取（增强保活）")
+                } else {
+                    android.util.Log.w("FocusService", "音频焦点获取失败: $result")
+                }
+            } else {
+                // Android 8.0 以下使用旧API
+                @Suppress("DEPRECATION")
+                val result = audioManager?.requestAudioFocus(
+                    { focusChange -> 
+                        android.util.Log.d("FocusService", "音频焦点变化: $focusChange")
+                    },
+                    android.media.AudioManager.STREAM_MUSIC,
+                    android.media.AudioManager.AUDIOFOCUS_GAIN
+                )
+                if (result == android.media.AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+                    android.util.Log.d("FocusService", "音频焦点已获取（增强保活）")
+                }
+            }
+        } catch (e: Exception) {
+            android.util.Log.e("FocusService", "请求音频焦点失败: ${e.message}")
+            // 失败不影响主功能
+        }
+    }
+    
+    /**
+     * 释放音频焦点
+     */
+    private fun releaseAudioFocus() {
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                audioFocusRequest?.let {
+                    audioManager?.abandonAudioFocusRequest(it)
+                }
+            } else {
+                @Suppress("DEPRECATION")
+                audioManager?.abandonAudioFocus { }
+            }
+            android.util.Log.d("FocusService", "音频焦点已释放")
+        } catch (e: Exception) {
+            android.util.Log.e("FocusService", "释放音频焦点失败: ${e.message}")
         }
     }
 
@@ -141,12 +266,20 @@ class FocusService : Service() {
     private fun startTimer() {
         timerJob?.cancel()
         timerJob = serviceScope.launch {
+            var heartbeatCounter = 0  // 心跳计数器
+            
             while (_totalTimeLeft.value > 0 && _timeLeft.value > 0) {
                 delay(1000L)
 
                 // 两个时间都减少
                 _timeLeft.value--
                 _totalTimeLeft.value--
+                
+                // 心跳日志（每30秒输出一次）
+                heartbeatCounter++
+                if (heartbeatCounter % 30 == 0) {
+                    android.util.Log.d("FocusService", "心跳: 剩余${_timeLeft.value}秒, 总剩余${_totalTimeLeft.value}秒, WakeLock=${wakeLock?.isHeld}")
+                }
                 
                 // 实时更新悬浮窗锁屏显示
                 updateOverlayDisplay()
@@ -241,6 +374,10 @@ class FocusService : Service() {
         // 停止悬浮窗锁屏
         LockOverlayService.hide(this)
         
+        // 移除通知并停止前台服务
+        val notificationManager = getSystemService(NotificationManager::class.java)
+        notificationManager?.cancel(1)  // 确保移除通知
+        
         stopForeground(STOP_FOREGROUND_REMOVE)
         stopSelf()
     }
@@ -284,6 +421,10 @@ class FocusService : Service() {
         // 停止悬浮窗锁屏
         LockOverlayService.hide(this)
         
+        // 移除通知并停止前台服务
+        val notificationManager = getSystemService(NotificationManager::class.java)
+        notificationManager?.cancel(1)  // 确保移除通知
+        
         stopForeground(STOP_FOREGROUND_REMOVE)
         stopSelf()
     }
@@ -295,7 +436,17 @@ class FocusService : Service() {
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel("focus_channel", "专注服务", NotificationManager.IMPORTANCE_LOW)
+            val channel = NotificationChannel(
+                "focus_channel",
+                "专注服务",
+                NotificationManager.IMPORTANCE_HIGH  // 提升为高优先级
+            ).apply {
+                description = "专注计时服务通知"
+                setShowBadge(true)
+                lockscreenVisibility = Notification.VISIBILITY_PUBLIC  // 锁屏可见
+                enableVibration(false)  // 禁用震动避免打扰
+                setSound(null, null)  // 禁用声音
+            }
             getSystemService(NotificationManager::class.java).createNotificationChannel(channel)
         }
     }
@@ -304,12 +455,28 @@ class FocusService : Service() {
         val mins = _timeLeft.value / 60
         val phaseText = if (_currentPhase.value == FocusPhase.FOCUS) "专注中" else "休息中"
 
+        // 创建点击通知时的Intent
+        val notificationIntent = Intent(this, com.example.focusflow.MainActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        }
+        val pendingIntent = android.app.PendingIntent.getActivity(
+            this,
+            0,
+            notificationIntent,
+            android.app.PendingIntent.FLAG_UPDATE_CURRENT or android.app.PendingIntent.FLAG_IMMUTABLE
+        )
+
         return NotificationCompat.Builder(this, "focus_channel")
             .setContentTitle("$phaseText: $currentTaskName")
             .setContentText("$statusText (剩余 ${mins}分钟)")
-            .setSmallIcon(R.mipmap.focus_flow_logo) // 使用新 logo
+            .setSmallIcon(R.mipmap.focus_flow_logo)
             .setOngoing(true)
-            .setOnlyAlertOnce(true) // 防止每次更新都叮咚响
+            .setOnlyAlertOnce(true)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)  // 高优先级
+            .setCategory(NotificationCompat.CATEGORY_SERVICE)  // 服务类别
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)  // 锁屏可见
+            .setContentIntent(pendingIntent)  // 点击跳转
+            .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)  // 立即显示
             .build()
     }
 
@@ -322,5 +489,7 @@ class FocusService : Service() {
         super.onDestroy()
         timerJob?.cancel()
         serviceScope.cancel()
+        releaseWakeLock()  // 释放 WakeLock
+        releaseAudioFocus()  // 释放音频焦点
     }
 }

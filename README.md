@@ -122,15 +122,6 @@ FocusFlow/
 │   │   ├── styles/            # 样式文件
 │   │   └── router/            # 路由配置
 │   └── package.json
-│
-├── DOC/                    # 文档
-│   ├── DevLogs_架构与开发日志/  # 开发日志
-│   ├── sql/                   # 数据库脚本
-│   └── *.docx, *.svg          # 设计文档
-│
-├── flowcharts/             # 流程图 (Mermaid)
-├── 毕业论文/                # 毕业论文相关
-└── README.md
 ```
 
 ## 🚀 快速开始
@@ -142,7 +133,7 @@ FocusFlow/
 
 ### 1. 克隆项目
 ```bash
-git clone https://github.com/your-username/FocusFlow.git
+git clone https://github.com/Hzihuan001/FocusFlow
 cd FocusFlow
 ```
 
@@ -201,6 +192,7 @@ cd FocusFlow_App
 ./gradlew assembleDebug
 
 # APK 位置：app/build/outputs/apk/debug/app-debug.apk
+# 注：若使用安卓真机调试，请确保手机与电脑处于同一局域网，并将 API 地址设置为电脑的局域网 IP（如 http://192.168.1.x:8080/api/）
 ```
 
 ## 📊 核心功能演示
