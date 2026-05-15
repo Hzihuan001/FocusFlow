@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -45,7 +46,8 @@ public class ZhipuProxyService {
 
     private final SystemConfigService systemConfigService;
     
-    private final RestTemplate restTemplate = new RestTemplate();
+    // 非流式调用专用 RestTemplate，设置连接/读取超时，防止无限挂起
+    private final RestTemplate restTemplate = buildRestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final ExecutorService executorService = Executors.newCachedThreadPool();
 
@@ -66,6 +68,17 @@ public class ZhipuProxyService {
     private static final int DEFAULT_MAX_TOKENS = 2048;
     private static final double DEFAULT_TEMPERATURE = 0.7;
     private static final int DEFAULT_TIMEOUT = 60;
+
+    /**
+     * 构建带超时配置的 RestTemplate（非流式调用专用）
+     * 连接超时 30s，读取超时与数据库配置的 ai.timeout 一致（默认 60s）
+     */
+    private static RestTemplate buildRestTemplate() {
+        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+        factory.setConnectTimeout(30_000);  // 30 秒连接超时
+        factory.setReadTimeout(60_000);     // 60 秒读取超时（兜底默认值）
+        return new RestTemplate(factory);
+    }
 
     /**
      * 获取 API Key

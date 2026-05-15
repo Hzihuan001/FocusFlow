@@ -1,22 +1,12 @@
 # ═══════════════════════════════════════════════════════════════════════════════
-# FocusFlow Server 配置文件
+# FocusFlow Server 配置文件 (Cloud Docker Optimized)
 # ═══════════════════════════════════════════════════════════════════════════════
 
 server:
   port: 8080
   servlet:
     context-path: /api
-  # ═══════════════════════════════════════════════════════════════════════════
-  # HTTPS 配置（生产环境必须启用）
-  # ═══════════════════════════════════════════════════════════════════════════
-  # 启用方式：设置环境变量 SSL_ENABLED=true
-  # 证书配置：设置 SSL_KEY_STORE 和 SSL_KEY_STORE_PASSWORD
-  # 
-  # 开发环境生成自签名证书：
-  # keytool -genkeypair -alias focusflow -keyalg RSA -keysize 2048 \
-  #   -storetype PKCS12 -keystore keystore.p12 -validity 365 \
-  #   -storepass your_password
-  # ═══════════════════════════════════════════════════════════════════════════
+  # HTTPS 配置（生产环境建议在 Nginx 层处理 SSL，此处默认关闭）
   ssl:
     enabled: ${SSL_ENABLED:false}
     key-store: ${SSL_KEY_STORE:classpath:keystore.p12}
@@ -28,9 +18,7 @@ spring:
   application:
     name: focusflow-server
 
-  # ═══════════════════════════════════════════════════════════════════════════
   # 文件上传配置
-  # ═══════════════════════════════════════════════════════════════════════════
   servlet:
     multipart:
       enabled: true
@@ -38,25 +26,28 @@ spring:
       max-request-size: 50MB
 
   # ═══════════════════════════════════════════════════════════════════════════
-  # 数据源配置（敏感信息使用环境变量，开发环境有默认值）
+  # 数据源配置（针对 MySQL 8.0 容器环境进行了优化）
   # ═══════════════════════════════════════════════════════════════════════════
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${DB_HOST:127.0.0.1}:${DB_PORT:3306}/${DB_NAME:focus_flow}?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    # 增加了 useSSL=false 和 allowPublicKeyRetrieval=true 以解决连接挂起问题
+    url: jdbc:mysql://${DB_HOST:127.0.0.1}:${DB_PORT:3306}/${DB_NAME:focus_flow}?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
     username: ${DB_USERNAME:root}
     password: ${DB_PASSWORD:123456}
-    # HikariCP 连接池配置
+    
+    # HikariCP 连接池优化
     hikari:
       minimum-idle: 5
       maximum-pool-size: 20
       idle-timeout: 30000
       pool-name: FocusFlowHikariPool
       max-lifetime: 1800000
-      connection-timeout: 30000
+      # 适当增加连接超时时间，给 MySQL 初始化留出空间
+      connection-timeout: 60000 
+      # 启动时检查连接有效性
+      connection-test-query: SELECT 1
 
-  # ═══════════════════════════════════════════════════════════════════════════
   # JSON 序列化配置
-  # ═══════════════════════════════════════════════════════════════════════════
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: Asia/Shanghai
@@ -64,37 +55,23 @@ spring:
       write-dates-as-timestamps: false
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# 文件上传目录配置
+# 文件上传目录配置 (Docker 挂载目录同步)
 # ═══════════════════════════════════════════════════════════════════════════════
-# 开发环境：使用相对路径 uploads/
-# 生产环境：使用绝对路径 /var/www/focusflow/uploads
-# 可通过环境变量 UPLOAD_DIR 覆盖
 file:
-  upload-dir: ${UPLOAD_DIR:/var/www/focusflow/uploads}
+  # 这里的默认值改为 Docker 内部路径
+  upload-dir: ${UPLOAD_DIR:/app/uploads}
 
-# ═══════════════════════════════════════════════════════════════════════════════
 # MyBatis-Plus 配置
-# ═══════════════════════════════════════════════════════════════════════════════
 mybatis-plus:
-  # 实体类扫描路径
   type-aliases-package: com.focusflow.server.entity
-  # Mapper XML 文件路径（如有）
   mapper-locations: classpath:mapper/**/*.xml
   configuration:
-    # 开启驼峰命名转换
     map-underscore-to-camel-case: true
-    # 开启 SQL 日志（开发环境）
+    # 生产环境如果日志太多可以改为 info，目前保留以方便调试
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
     db-config:
-      # 主键策略：自增
       id-type: auto
-      # 逻辑删除字段
       logic-delete-field: deleted
       logic-delete-value: 1
       logic-not-delete-value: 0
-
-# ═══════════════════════════════════════════════════════════════════════════════
-# 日志配置（由 logback-spring.xml 接管）
-# 日志目录：/opt/focusflow/logs（可通过环境变量 LOG_PATH 覆盖）
-# ═══════════════════════════════════════════════════════════════════════════════
