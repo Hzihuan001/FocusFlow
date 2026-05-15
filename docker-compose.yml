@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  mysql-db:
+    image: mysql:8.0
+    container_name: focus-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: focus_flow
+      TZ: Asia/Shanghai
+    volumes:
+      - focus-mysql-data:/var/lib/mysql
+      - ./DOC/sql/FocusFlow_Full_Init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - focus-net
+
+
+  focus-server:
+    build: 
+      context: ./FocusFlow_Server
+    container_name: focus-backend
+    restart: always
+    depends_on:
+      - mysql-db
+    environment:
+      - DB_HOST=mysql-db 
+      - DB_PORT=3306
+      - DB_NAME=focus_flow
+      - DB_USERNAME=root
+      - DB_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - ZHIPU_API_KEY=${ZHIPU_API_KEY}
+      - TZ=Asia/Shanghai
+    ports:
+      - "8080:8080"
+    volumes:
+      - focus-uploads:/app/uploads
+    networks:
+      - focus-net
+
+  focus-web:
+    build:
+      context: ./FocusFlow_Front
+      dockerfile: Dockerfile 
+    container_name: focus-frontend
+    restart: always
+    depends_on:
+      - focus-server
+    ports:
+      - "3000:80" 
+    networks:
+      - focus-net
+
+volumes:
+  focus-mysql-data:
+  focus-uploads:
+
+networks:
+  focus-net:
+    driver: bridge

@@ -455,10 +455,10 @@ class FocusService : Service() {
         val mins = _timeLeft.value / 60
         val phaseText = if (_currentPhase.value == FocusPhase.FOCUS) "专注中" else "休息中"
 
-        // 创建点击通知时的Intent
-        val notificationIntent = Intent(this, com.example.focusflow.MainActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        }
+        // 创建点击通知时的Intent - 使用完整类名
+        val notificationIntent = Intent(this, Class.forName("com.example.focusflow.MainActivity"))
+        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        
         val pendingIntent = android.app.PendingIntent.getActivity(
             this,
             0,
